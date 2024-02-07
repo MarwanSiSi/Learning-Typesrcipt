@@ -1,117 +1,47 @@
-abstract class Department {
-  //   private id: string;
-  //   private name: string;
-  protected employees: string[] = [];
+// an interface is used to describe an object. It can be used to define the structure of an object.
 
-  constructor(protected readonly id: string, public name: string) {
-    // this.id = id;
-    // this.name = n;
+// type AddFn = (a: number, b: number) => number;
+
+interface AddFn {
+  (a: number, b: number): number;
+}
+
+let add: AddFn;
+add = (n1: number, n2: number) => {
+  return n1 + n2;
+};
+
+interface Named {
+  readonly name?: string;
+  outputName?: string;
+}
+
+interface Greetable extends Named {
+  greet(phrase: string): void;
+}
+
+class Person implements Greetable {
+  name?: string;
+  age = 30;
+
+  constructor(n?: string) {
+    if (n) this.name = n;
   }
 
-  static createEmployee(name: string) {
-    return { name: name };
-  }
+  greet(phrase: string) {
+    if (this.name) console.log(phrase + " " + this.name);
 
-  abstract describe(this: Department): void;
-
-  addEmployee(employee: string) {
-    this.employees.push(employee);
-  }
-
-  printEmployeeInformation() {
-    console.log(this.employees.length);
-    console.log(this.employees);
+    console.log("Hi");
   }
 }
 
-class ITDepartment extends Department {
-  admins: string[];
-  constructor(id: string, admins: string[]) {
-    super(id, "IT");
-    this.admins = admins;
-  }
-  describe() {
-    console.log("IT Department - ID: " + this.id);
-  }
-}
+let user1: Greetable;
+user1 = new Person();
 
-class AccountingDepartment extends Department {
-  private lastReport: string;
-  private static instance: AccountingDepartment;
+user1.greet("Hi there - I am");
 
-  private constructor(id: string, private reports: string[]) {
-    super(id, "Accounting");
-    this.lastReport = reports[0];
-  }
+console.log(user1);
 
-  static getInstance() {
-    return (
-      this.instance || (this.instance = new AccountingDepartment("d2", []))
-    );
-  }
-  set mostRecentReport(value: string) {
-    if (!value) throw new Error("Please pass in a valid value");
-    this.lastReport = value;
-  }
+//READONLY means that the property can only be set once and then never again. It is a feature of TypeScript and not JavaScript.
 
-  get mostRecentReport() {
-    if (this.lastReport) return this.lastReport;
-
-    throw new Error("No report found");
-  }
-
-  describe() {
-    console.log("Accounting Department - ID: " + this.id);
-  }
-
-  addReport(report: string) {
-    this.reports.push(report);
-    this.lastReport = report;
-  }
-  printReports() {
-    console.log(this.reports);
-  }
-
-  addEmployee(employee: string): void {
-    if (employee === "Max") {
-      return;
-    }
-    this.employees.push(employee);
-  }
-}
-
-// const accounting = new Department("d1", "Accounting");
-// accounting.addEmployee("Max");
-// accounting.addEmployee("Manu");
-// console.log(accounting);
-
-// accounting.describe();
-// accounting.printEmployeeInformation();
-
-const accountingDep = AccountingDepartment.getInstance();
-
-console.log(accountingDep);
-
-accountingDep.addReport("Something went wrong");
-
-accountingDep.printReports();
-accountingDep.addEmployee("Max");
-accountingDep.addEmployee("Manu");
-accountingDep.printEmployeeInformation();
-
-console.log(accountingDep.mostRecentReport);
-accountingDep.mostRecentReport = "New Report";
-console.log(accountingDep.mostRecentReport);
-// accountingDep.mostRecentReport = "";
-accountingDep.describe();
-
-const employee1 = Department.createEmployee("Max");
-
-const it = new ITDepartment("d3", ["Max"]);
-it.addEmployee("Max");
-it.addEmployee("Manu");
-it.describe();
-
-//STATIC METHODS/PROPERTIES: we can use it without creating an instance of the class
-
-//PROTECTED: can be accessed by the class and its subclasses
+//In INTERFACES/Classes, properties/methods can be optional by adding a question mark after the property/method name.
