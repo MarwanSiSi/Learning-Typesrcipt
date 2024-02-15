@@ -101,6 +101,8 @@ function moveAnimal(animal: Animal) {
 
 moveAnimal({ type: "bird", flyingSpeed: 10 });
 
+///////////////////////////////////////////////////
+
 //TYPE CASTING
 
 //syntax 1
@@ -111,8 +113,61 @@ moveAnimal({ type: "bird", flyingSpeed: 10 });
 
 //syntax 2
 
-const userInputElement = <HTMLInputElement>(
-  document.getElementById("user-input")!
-);
+// const userInputElement = <HTMLInputElement>(
+//   document.getElementById("user-input")!
+// );
 
-userInputElement.value = "Hi there!";
+// userInputElement.value = "Hi there!";
+
+///////////////////////////////////////////////////
+
+//INDEX PROPERTIES
+
+interface ErrorContainer {
+  [prop: string]: string; //this means that the key will be a string and the value will be a string
+}
+
+const errorBag: ErrorContainer = {
+  email: "Not a valid email",
+  username: "Must start with a capital character",
+};
+
+////////////////////////////////////////////////////////
+
+//FUNCTION OVERLOADS: when we want to have multiple function signatures, meaning that the function can be called with different parameters and return different things
+
+function add1(a: number, b: number): number;
+function add1(a: string, b: string): string;
+function add1(a: string, b: number): string;
+function add1(a: number, b: string): string;
+function add1(n1: Combinable, n2: Combinable) {
+  if (typeof n1 === "string" || typeof n2 === "string") {
+    return n1.toString() + n2.toString();
+  }
+  return n1 + n2;
+}
+
+const result = add1("Max", " Schwarz");
+result.split(" ");
+
+//////////////////////////////////////////////////////
+
+//OPTIONAL CHAINING
+
+const fetchedUserData = {
+  id: "u1",
+  name: "Max",
+  job: { title: "CEO", description: "My own company" },
+};
+
+console.log(fetchedUserData?.job?.title);
+
+//////////////////////////////////////////////////////
+
+//NULLISH COALESCING OPERATOR: it is used to check if a value is null or undefined and if it is, it will return a default value
+
+const userInput = null;
+
+const storedData = userInput ?? "DEFAULT";
+
+console.log(storedData);
